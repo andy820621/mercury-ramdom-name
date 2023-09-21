@@ -8,9 +8,19 @@
 					<li
 						v-for="(number, index) in randomNumbers"
 						:key="index"
-						:style="{ '--num': liFontSize }"
+						:style="{
+							width: `${(liFontSize * 19) / 5}vw`,
+							fontSize: `${liFontSize}vw`,
+						}"
 					>
-						{{ stringArray[number - 1] }}
+						<p>{{ stringArray[number - 1][0] }}</p>
+						<p
+							:style="{
+								fontSize: `${pFontSize}vw`,
+							}"
+						>
+							{{ stringArray[number - 1][1] }}
+						</p>
 					</li>
 				</ul>
 			</div>
@@ -32,48 +42,48 @@ import { ref, watch, onMounted, computed } from "vue";
 const startNumber = ref(1);
 const endNumber = ref(41);
 const numberArray = ref<number[]>([]);
-const stringArray = ref<string[]>([
-	"廖裕德Land",
-	"吳義信Nobu",
-	"張添美Insurance",
-	"何宗雄Leica",
-	"林功瑞Success",
-	"蔡富得Screen",
-	"葉德發Building",
-	"李詩峰Sticker",
-	"邱慶宗Fan",
-	"張育榮Jily",
-	"林繼鐘John",
-	"商國松Sun",
-	"吳竹林Safe",
-	"簡榮坤Gary",
-	"劉鎮洲Marker",
-	"林拴O.B.S.",
-	"張振坪Wireless",
-	"吳俊德David",
-	"鄭明銓Bruce",
-	"賴明福C.P.A.",
-	"陳金鐘James",
-	"許誌宏Paul",
-	"黃國旺Label",
-	"賴英弘Leo",
-	"巫忠勇Joe",
-	"陳尚彬Ocean",
-	"周啟文Kevin",
-	"陳浚宏Jun",
-	"官彥均I-Guard",
-	"吳宗憲Archie",
-	"元立昇Alex",
-	"朝陽Mercury",
-	"林進照Mickey",
-	"王文杰Jack",
-	"吳輝平Eric",
-	"吳贊吉Andy",
-	"邱浤瑋 Brian",
-	"林政豪Howard",
-	"鄭加新Renew",
-	"徐賢修Foster",
-	"葉紡",
+const stringArray = ref<[string, string][]>([
+	["廖裕德", "Land"],
+	["吳義信", "Nobu"],
+	["張添美", "Insurance"],
+	["何宗雄", "Leica"],
+	["林功瑞", "Success"],
+	["蔡富得", "Screen"],
+	["葉德發", "Building"],
+	["李詩峰", "Sticker"],
+	["邱慶宗", "Fan"],
+	["張育榮", "Jily"],
+	["林繼鐘", "John"],
+	["商國松", "Sun"],
+	["吳竹林", "Safe"],
+	["簡榮坤", "Gary"],
+	["劉鎮洲", "Marker"],
+	["林拴", "O.B.S."],
+	["張振坪", "Wireless"],
+	["吳俊德", "David"],
+	["鄭明銓", "Bruce"],
+	["賴明福", "C.P.A."],
+	["陳金鐘", "James"],
+	["許誌宏", "Paul"],
+	["黃國旺", "Label"],
+	["賴英弘", "Leo"],
+	["巫忠勇", "Joe"],
+	["陳尚彬", "Ocean"],
+	["周啟文", "Kevin"],
+	["陳浚宏", "Jun"],
+	["官彥均", "I-Guard"],
+	["吳宗憲", "Archie"],
+	["元立昇", "Alex"],
+	["朝陽", "Mercury"],
+	["林進照", "Mickey"],
+	["王文杰", "Jack"],
+	["吳輝平", "Eric"],
+	["吳贊吉", "Andy"],
+	["邱浤瑋", "Brian"],
+	["林政豪", "Howard"],
+	["鄭加新", "Renew"],
+	["徐賢修", "Foster"],
+	["葉紡", ""],
 ]);
 for (let i = startNumber.value; i <= endNumber.value; i++) {
 	numberArray.value.push(i);
@@ -82,25 +92,37 @@ for (let i = startNumber.value; i <= endNumber.value; i++) {
 const count = ref(1);
 const randomNumbers = ref<number[]>([]);
 const selectedNumbersArray = ref<number[][]>([]);
-const alertMessage = computed(() =>
-	numberArray.value.length ? "" : "已經沒有人名可以產生了!!!"
-);
+const alertMessage = computed(() => (numberArray.value.length ? "" : "結束"));
 const liFontSize = computed(() => {
 	if (randomNumbers.value.length) {
 		switch (randomNumbers.value.length) {
 			case 1:
-				return "10vw";
+				return 10;
 			case 2:
-				return "8vw";
+				return 8;
 			case 3:
-				return "6vw";
+				return 6;
 			case 4:
-				return "6vw";
+				return 6;
 			case 5:
-				return "5.3vw";
+				return 5.3;
 		}
 	}
-	return "4vw";
+	return 4;
+});
+const pFontSize = computed(() => {
+	if (randomNumbers.value.length) {
+		switch (randomNumbers.value.length) {
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+				return 3;
+			case 5:
+				return 2.7;
+		}
+	}
+	return 3;
 });
 
 watch(count, (val) => {
@@ -324,13 +346,20 @@ li {
 	row-gap: 1vw;
 
 	li {
-		--num: 5vw;
-		width: calc(var(--num) * 19 / 5);
+		// --num: 5vw;
+		// width: calc(var(--num) * 19 / 5 * 1vw);
 		text-align: center;
-		font-size: var(--num);
 		font-weight: 800;
 		overflow-wrap: break-word;
 		word-wrap: break-word;
+		// font-size: calc(var(--num) * 1vw);
+		p {
+			padding: 0;
+			margin: 0;
+			&.en {
+				// font-size: calc(var(--num) / 2 * 1vw);
+			}
+		}
 	}
 }
 </style>
