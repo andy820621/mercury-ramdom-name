@@ -1,26 +1,15 @@
 <template>
 	<div class="main-content">
 		<div class="img-box">
-			<!-- <div class="circle"> -->
-			<!-- <ul class="selected-number-array">
-        <li
-          v-for="(selectedNumbers, index) in selectedNumbersArray"
-          :key="index"
-        >
-          第{{ index + 1 }}組
-          <ul class="numberArray">
-            <li v-for="(number, chIndex) in selectedNumbers" :key="chIndex">
-              {{ stringArray[number - 1] }}
-            </li>
-          </ul>
-        </li>
-      </ul> -->
-			<!-- </div> -->
 			<img class="main-img" src="./assets/background-for-name.png" alt="" />
 			<div class="current-number">
 				<p v-if="alertMessage">{{ alertMessage }}</p>
 				<ul v-else class="numberArray">
-					<li v-for="(number, index) in randomNumbers" :key="index">
+					<li
+						v-for="(number, index) in randomNumbers"
+						:key="index"
+						:style="{ '--num': liFontSize }"
+					>
 						{{ stringArray[number - 1] }}
 					</li>
 				</ul>
@@ -41,7 +30,7 @@
 <script setup lang="ts">
 import { ref, watch, onMounted, computed } from "vue";
 const startNumber = ref(1);
-const endNumber = ref(42);
+const endNumber = ref(41);
 const numberArray = ref<number[]>([]);
 const stringArray = ref<string[]>([
 	"廖裕德Land",
@@ -90,12 +79,29 @@ for (let i = startNumber.value; i <= endNumber.value; i++) {
 	numberArray.value.push(i);
 }
 
-const count = ref(3);
+const count = ref(1);
 const randomNumbers = ref<number[]>([]);
 const selectedNumbersArray = ref<number[][]>([]);
 const alertMessage = computed(() =>
 	numberArray.value.length ? "" : "已經沒有人名可以產生了!!!"
 );
+const liFontSize = computed(() => {
+	if (randomNumbers.value.length) {
+		switch (randomNumbers.value.length) {
+			case 1:
+				return "10vw";
+			case 2:
+				return "8vw";
+			case 3:
+				return "6vw";
+			case 4:
+				return "6vw";
+			case 5:
+				return "5.3vw";
+		}
+	}
+	return "4vw";
+});
 
 watch(count, (val) => {
 	if (val) {
@@ -135,8 +141,9 @@ const generateRandomNumbers = () => {
 		const randomIndex = Math.floor(Math.random() * numberArray.value.length);
 
 		const selectedNumber = numberArray.value.splice(randomIndex, 1)[0];
-
-		randomNumbers.value.push(selectedNumber);
+		if (selectedNumber) {
+			randomNumbers.value.push(selectedNumber);
+		}
 	}
 	// 添加到 selectedNumbersArray 中
 	selectedNumbersArray.value.push(randomNumbers.value);
@@ -173,7 +180,7 @@ function confirmRestart() {
 			position: absolute;
 		}
 		.restart {
-			bottom: 1rem;
+			bottom: calc(6.3% - 45px);
 			left: 50%;
 			transform: translateX(-50%);
 			z-index: 3;
@@ -213,7 +220,7 @@ function confirmRestart() {
 				padding: 0;
 				margin: 0;
 				background: transparent;
-				font-size: 2.8rem;
+				font-size: 2rem;
 				color: #000;
 			}
 			input[type="number"]::-webkit-inner-spin-button,
@@ -226,8 +233,8 @@ function confirmRestart() {
 		.btn {
 			width: 10%;
 			aspect-ratio: 10 / 14;
-			bottom: 2.4%;
-			right: 2.4%;
+			top: 0;
+			right: 1%;
 			z-index: 3;
 			cursor: pointer;
 			&:active {
@@ -240,17 +247,18 @@ function confirmRestart() {
 			}
 		}
 		.current-number {
+			border: 1px solid red;
 			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			// width: 20.2%;
-			// height: 25.6%;
-			// top: 9.88%;
-			// right: 1.9%;
+			width: 88%;
+			height: 70%;
+			top: 20%;
+			left: 5%;
 			z-index: 3;
 			display: grid;
 			place-items: center;
+			p {
+				font-size: 4.5vw;
+			}
 		}
 		.circle {
 			position: absolute;
@@ -307,19 +315,23 @@ li {
 }
 
 .numberArray {
+	width: 100%;
+	height: 100%;
 	display: flex;
-	flex-direction: column;
-	gap: 1.5rem;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	column-gap: 5vw;
+	row-gap: 1vw;
 
 	li {
-		width: 100px;
-		height: 50px;
-		font-size: 1.5rem;
+		--num: 5vw;
+		width: calc(var(--num) * 19 / 5);
+		text-align: center;
+		font-size: var(--num);
 		font-weight: 800;
-		//   border: 1px solid #000;
-		//   border-radius: 50%;
-		//   display: grid;
-		//   place-items: center;
+		overflow-wrap: break-word;
+		word-wrap: break-word;
 	}
 }
 </style>
