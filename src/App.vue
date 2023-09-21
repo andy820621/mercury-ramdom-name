@@ -247,7 +247,6 @@ function confirmRestart() {
 			}
 		}
 		.current-number {
-			border: 1px solid red;
 			position: absolute;
 			width: 88%;
 			height: 70%;
