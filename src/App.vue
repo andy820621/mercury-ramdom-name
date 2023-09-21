@@ -74,7 +74,7 @@ const stringArray = ref<[string, string][]>([
 	["官彥均", "I-Guard"],
 	["吳宗憲", "Archie"],
 	["元立昇", "Alex"],
-	["朝陽", "Mercury"],
+	["崔朝陽", "Mercury"],
 	["林進照", "Mickey"],
 	["王文杰", "Jack"],
 	["吳輝平", "Eric"],
